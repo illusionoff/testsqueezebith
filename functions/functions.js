@@ -55,7 +55,61 @@ function reconnectTimeMessageClosure(ws) {
   }
   return (ws) => startReconnect(ws)
 }
+function changeTradeArr(initialObj) {
+  console.log('initialObj.name=', initialObj.name);
+  let bay = initialObj.bay;
+  let sell = initialObj.sell;
+  let trueBay = false;
+  let trueSell = false;
+  let bayOrSell = -1;
+  // initialObj.bayOrSell = -1; // для исключения влияния предыдущего значения опроса
+  variableClosure('1');//count= 0
+  // выход при устаревании данных
+  // if ()
+  //  Инициализация первых предыдущих значений
+  // проверка изменения значения для предотвращения лишних вычислений
+  if (initialObj.orderbookFirstPreviousBay && bay != initialObj.orderbookFirstPreviousBay) {
+    console.log('function changeTradeArr() initialObj.orderbookFirstPreviousBay=', initialObj.orderbookFirstPreviousBay);
+    console.log('function changeTradeArr() initialObj.bay=', bay);
+    // process.exit();
+
+    bayOrSell = 1;
+    initialObj.timeBay = new Date().getTime();
+    initialObj.orderbookFirstPreviousBay = bay;
+    console.log('bay=', bay);
+
+    initialBith.objArrs.arrBay.push(bay);
+    initialBith.objArrs.arrTimeBay.push(initialObj.timeBay);
+
+    // initialObj.priceAndComissionsBay = bay - bay * initialObj.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
+    trueBay = true;
+  }
+  if (initialObj.orderbookFirstPreviousSell && sell != initialObj.orderbookFirstPreviousSell) {
+    // Если одновременно изменения и в bay и в sell
+    if (bayOrSell === 1) {
+      bayOrSell = 2;
+    } else {
+      bayOrSell = 0;
+    }
+    initialObj.timeSell = new Date().getTime();
+    initialObj.orderbookFirstPreviousSell = sell;
+    console.log('sell=', sell);
+
+    initialBith.objArrs.arrSell.push(sell);
+    initialBith.objArrs.arrTimeSell.push(initialObj.timeSell);
+
+    // initialObj.priceAndComissionsSell = sell + sell * initialObj.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
+    trueSell = true;
+  }
+
+  if (trueBay || trueSell) {
+    initialObj.bayOrSell = bayOrSell;
+    variableClosure2('2');
+    return true
+  }
+
+  return false
+}
 
 
-
-module.exports = { goTrade, writtenCSV, testWritable, parseCSV, parseTest, changeTradeArr, reconnectTimeMessageClosure }
+module.exports = { changeTradeArr, reconnectTimeMessageClosure }
