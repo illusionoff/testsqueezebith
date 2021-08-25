@@ -78,8 +78,8 @@ function changeTradeArr(initialObj) {
     initialObj.orderbookFirstPreviousBay = bay;
     console.log('bay=', bay);
 
-    initialBith.objArrs.arrBay.push(bay);
-    initialBith.objArrs.arrTimeBay.push(initialObj.timeBay);
+    initialObj.objArrs.arrBay.push(bay);
+    initialObj.objArrs.arrTimeBay.push(initialObj.timeBay);
 
     // initialObj.priceAndComissionsBay = bay - bay * initialObj.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
     trueBay = true;
@@ -95,8 +95,8 @@ function changeTradeArr(initialObj) {
     initialObj.orderbookFirstPreviousSell = sell;
     console.log('sell=', sell);
 
-    initialBith.objArrs.arrSell.push(sell);
-    initialBith.objArrs.arrTimeSell.push(initialObj.timeSell);
+    initialObj.objArrs.arrSell.push(sell);
+    initialObj.objArrs.arrTimeSell.push(initialObj.timeSell);
 
     // initialObj.priceAndComissionsSell = sell + sell * initialObj.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
     trueSell = true;
