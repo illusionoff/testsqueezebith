@@ -3,7 +3,7 @@ const { wsStartBith } = require('./lib/bithumbpro');//coinConfigBith
 // const { coinConfigBith } = require('./lib/bithOrderbook');
 
 function init() {
-  wsStartBith('subscribe', "ORDERBOOK:XRP-USDT");
+  wsStartBith('subscribe', "ORDERBOOK10:XRP-USDT");
 }
 
 init();
