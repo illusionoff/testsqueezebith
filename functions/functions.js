@@ -68,39 +68,38 @@ function changeTradeArr(initialObj) {
   // if ()
   //  Инициализация первых предыдущих значений
   // проверка изменения значения для предотвращения лишних вычислений
-  if (initialObj.orderbookFirstPreviousBay && bay != initialObj.orderbookFirstPreviousBay) {
-    console.log('function changeTradeArr() initialObj.orderbookFirstPreviousBay=', initialObj.orderbookFirstPreviousBay);
-    console.log('function changeTradeArr() initialObj.bay=', bay);
-    // process.exit();
+  // if (initialObj.orderbookFirstPreviousBay && bay != initialObj.orderbookFirstPreviousBay) {
+  console.log('function changeTradeArr() initialObj.orderbookFirstPreviousBay=', initialObj.orderbookFirstPreviousBay);
+  console.log('function changeTradeArr() initialObj.bay=', bay);
+  // process.exit();
 
-    bayOrSell = 1;
-    initialObj.timeBay = new Date().getTime();
-    initialObj.orderbookFirstPreviousBay = bay;
-    console.log('bay=', bay);
+  bayOrSell = 1;
+  initialObj.timeBay = new Date().getTime();
+  initialObj.orderbookFirstPreviousBay = bay;
+  console.log('bay=', bay);
+  initialObj.arrChart.b.push([bay, initialObj.timeBay, initialObj.messageObj.data.ver, initialObj.messageObj.timestamp]);//['b', bay, initialObj.timeBay]
+  // initialObj.objArrs.arrTimeBay.push(initialObj.timeBay);
 
-    initialObj.arrChart.b.push([bay, initialObj.timeBay]);//['b', bay, initialObj.timeBay]
-    // initialObj.objArrs.arrTimeBay.push(initialObj.timeBay);
-
-    // initialObj.priceAndComissionsBay = bay - bay * initialObj.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
-    trueBay = true;
+  // initialObj.priceAndComissionsBay = bay - bay * initialObj.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
+  trueBay = true;
+  // }
+  // if (initialObj.orderbookFirstPreviousSell && sell != initialObj.orderbookFirstPreviousSell) {
+  // Если одновременно изменения и в bay и в sell
+  if (bayOrSell === 1) {
+    bayOrSell = 2;
+  } else {
+    bayOrSell = 0;
   }
-  if (initialObj.orderbookFirstPreviousSell && sell != initialObj.orderbookFirstPreviousSell) {
-    // Если одновременно изменения и в bay и в sell
-    if (bayOrSell === 1) {
-      bayOrSell = 2;
-    } else {
-      bayOrSell = 0;
-    }
-    initialObj.timeSell = new Date().getTime();
-    initialObj.orderbookFirstPreviousSell = sell;
-    console.log('sell=', sell);
+  initialObj.timeSell = new Date().getTime();
+  initialObj.orderbookFirstPreviousSell = sell;
+  console.log('sell=', sell);
 
-    initialObj.arrChart.s.push([sell, initialObj.timeSell]);//['s', sell, initialObj.timeSell]
-    // initialObj.objArrs.arrTimeSell.push(initialObj.timeSell);
+  initialObj.arrChart.s.push([sell, initialObj.timeSell, initialObj.messageObj.data.ver, initialObj.messageObj.timestamp]);//['s', sell, initialObj.timeSell]
+  // initialObj.objArrs.arrTimeSell.push(initialObj.timeSell);
 
-    // initialObj.priceAndComissionsSell = sell + sell * initialObj.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
-    trueSell = true;
-  }
+  // initialObj.priceAndComissionsSell = sell + sell * initialObj.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
+  trueSell = true;
+  // }
 
   if (trueBay || trueSell) {
     initialObj.bayOrSell = bayOrSell;
