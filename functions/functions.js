@@ -72,12 +72,15 @@ function changeTradeArr(initialObj) {
   console.log('function changeTradeArr() initialObj.orderbookFirstPreviousBay=', initialObj.orderbookFirstPreviousBay);
   console.log('function changeTradeArr() initialObj.bay=', bay);
   // process.exit();
+  initialObj.time = new Date().getTime();
+  let diffTimeServer = initialObj.time - initialObj.messageObj.timestamp;
+  let diffTimeVer = initialObj.messageObj.timestamp - parseInt(initialObj.messageObj.data.ver, 10);
 
   bayOrSell = 1;
-  initialObj.timeBay = new Date().getTime();
   initialObj.orderbookFirstPreviousBay = bay;
   console.log('bay=', bay);
-  initialObj.arrChart.b.push([bay, initialObj.timeBay, initialObj.messageObj.data.ver, initialObj.messageObj.timestamp]);//['b', bay, initialObj.timeBay]
+  const arrLengthBay = initialObj.arrChart.b.length + 1;
+  initialObj.arrChart.b.push([arrLengthBay, bay, initialObj.time, initialObj.messageObj.data.ver, diffTimeVer, initialObj.messageObj.timestamp, diffTimeServer]);//['b', bay, initialObj.timeBay]
   // initialObj.objArrs.arrTimeBay.push(initialObj.timeBay);
 
   // initialObj.priceAndComissionsBay = bay - bay * initialObj.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
@@ -90,12 +93,12 @@ function changeTradeArr(initialObj) {
   } else {
     bayOrSell = 0;
   }
-  initialObj.timeSell = new Date().getTime();
   initialObj.orderbookFirstPreviousSell = sell;
   console.log('sell=', sell);
+  const arrLengthSell = initialObj.arrChart.b.length + 1;
 
-  initialObj.arrChart.s.push([sell, initialObj.timeSell, initialObj.messageObj.data.ver, initialObj.messageObj.timestamp]);//['s', sell, initialObj.timeSell]
-  // initialObj.objArrs.arrTimeSell.push(initialObj.timeSell);
+  initialObj.arrChart.s.push([arrLengthSell, sell, initialObj.time, initialObj.messageObj.data.ver, diffTimeVer, initialObj.messageObj.timestamp, diffTimeServer]);//['s', sell, initialObj.timeSell]
+
 
   // initialObj.priceAndComissionsSell = sell + sell * initialObj.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
   trueSell = true;
