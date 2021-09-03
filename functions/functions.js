@@ -81,7 +81,7 @@ function changeTradeArr(initialObj) {
   console.log('bay=', bay);
   initialObj.orderbookFirstPreviousSell = sell;
   console.log('sell=', sell);
-  const arrLengthBay = initialObj.arrChart.b.length + 1;
+  const arrLengthBay = initialObj.arrChart.b.length;
   initialObj.arrChart.b.push([arrLengthBay, bay, sell, initialObj.time, initialObj.messageObj.data.ver, diffTimeVer, initialObj.messageObj.timestamp, diffTimeServer]);//['b', bay, initialObj.timeBay]
   // initialObj.objArrs.arrTimeBay.push(initialObj.timeBay);
 
@@ -90,16 +90,16 @@ function changeTradeArr(initialObj) {
   // }
   // if (initialObj.orderbookFirstPreviousSell && sell != initialObj.orderbookFirstPreviousSell) {
   // Если одновременно изменения и в bay и в sell
-  if (bayOrSell === 1) {
-    bayOrSell = 2;
-  } else {
-    bayOrSell = 0;
-  }
+  // if (bayOrSell === 1) {
+  //   bayOrSell = 2;
+  // } else {
+  //   bayOrSell = 0;
+  // }
   // initialObj.orderbookFirstPreviousSell = sell;
   // console.log('sell=', sell);
-  const arrLengthSell = initialObj.arrChart.b.length + 1;
+  // const arrLengthSell = initialObj.arrChart.b.length + 1;
 
-  initialObj.arrChart.s.push([arrLengthSell, sell, initialObj.time, initialObj.messageObj.data.ver, diffTimeVer, initialObj.messageObj.timestamp, diffTimeServer]);//['s', sell, initialObj.timeSell]
+  // initialObj.arrChart.s.push([arrLengthSell, sell, initialObj.time, initialObj.messageObj.data.ver, diffTimeVer, initialObj.messageObj.timestamp, diffTimeServer]);//['s', sell, initialObj.timeSell]
 
 
   // initialObj.priceAndComissionsSell = sell + sell * initialObj.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
@@ -115,7 +115,7 @@ function changeTradeArr(initialObj) {
   return false
 }
 
-// в arrB находим наибольшоую разницу в сторону возростания
+//  находим наибольшоую разницу
 function diffMaxIndex(obj, arrDiffMaxIndex) { // true = sell, false = bay
   let diffMax = obj.arr.reduce((accum, item, index, arr) => {
     let preIndex = 0;
@@ -123,7 +123,7 @@ function diffMaxIndex(obj, arrDiffMaxIndex) { // true = sell, false = bay
     if (preIndex < 2) return accum
     if (arrDiffMaxIndex.includes(preIndex)) return accum
     let diff = item - arr[preIndex];
-    if (obj.sell) diff = -diff;
+    if (obj.sell) diff = -diff;// вариант для sell = false
     if (diff > accum.diff) {
       accum.diff = diff;
       accum.index = preIndex;
@@ -138,7 +138,7 @@ function diffMaxIndexS(obj) {
   //obj = { arr: arr, sell: true }
   let arrDiffMaxIndex = [];
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 5; i++) {
     const resDiff = diffMaxIndex(obj, arrDiffMaxIndex);
     resDiff != 0 ? arrDiffMaxIndex.push(resDiff) : false
   }
