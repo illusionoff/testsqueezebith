@@ -115,5 +115,35 @@ function changeTradeArr(initialObj) {
   return false
 }
 
+// в arrB находим наибольшоую разницу в сторону возростания
+function diffMaxIndex(obj, arrDiffMaxIndex) { // true = sell, false = bay
+  let diffMax = obj.arr.reduce((accum, item, index, arr) => {
+    let preIndex = 0;
+    preIndex = index - 1;
+    if (preIndex < 2) return accum
+    if (arrDiffMaxIndex.includes(preIndex)) return accum
+    let diff = item - arr[preIndex];
+    if (obj.sell) diff = -diff;
+    if (diff > accum.diff) {
+      accum.diff = diff;
+      accum.index = preIndex;
+      return accum
+    }
+    return accum
+  }, { diff: 0, index: 0 }); // Начальное значение аккумулятора 0
+  return diffMax.index
+}
 
-module.exports = { changeTradeArr, reconnectTimeMessageClosure }
+function diffMaxIndexS(obj) {
+  //obj = { arr: arr, sell: true }
+  let arrDiffMaxIndex = [];
+
+  for (let i = 0; i < 3; i++) {
+    const resDiff = diffMaxIndex(obj, arrDiffMaxIndex);
+    resDiff != 0 ? arrDiffMaxIndex.push(resDiff) : false
+  }
+
+  return arrDiffMaxIndex
+}
+
+module.exports = { changeTradeArr, reconnectTimeMessageClosure, diffMaxIndexS }
