@@ -79,8 +79,10 @@ function changeTradeArr(initialObj) {
   bayOrSell = 1;
   initialObj.orderbookFirstPreviousBay = bay;
   console.log('bay=', bay);
+  initialObj.orderbookFirstPreviousSell = sell;
+  console.log('sell=', sell);
   const arrLengthBay = initialObj.arrChart.b.length + 1;
-  initialObj.arrChart.b.push([arrLengthBay, bay, initialObj.time, initialObj.messageObj.data.ver, diffTimeVer, initialObj.messageObj.timestamp, diffTimeServer]);//['b', bay, initialObj.timeBay]
+  initialObj.arrChart.b.push([arrLengthBay, bay, sell, initialObj.time, initialObj.messageObj.data.ver, diffTimeVer, initialObj.messageObj.timestamp, diffTimeServer]);//['b', bay, initialObj.timeBay]
   // initialObj.objArrs.arrTimeBay.push(initialObj.timeBay);
 
   // initialObj.priceAndComissionsBay = bay - bay * initialObj.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
@@ -93,8 +95,8 @@ function changeTradeArr(initialObj) {
   } else {
     bayOrSell = 0;
   }
-  initialObj.orderbookFirstPreviousSell = sell;
-  console.log('sell=', sell);
+  // initialObj.orderbookFirstPreviousSell = sell;
+  // console.log('sell=', sell);
   const arrLengthSell = initialObj.arrChart.b.length + 1;
 
   initialObj.arrChart.s.push([arrLengthSell, sell, initialObj.time, initialObj.messageObj.data.ver, diffTimeVer, initialObj.messageObj.timestamp, diffTimeServer]);//['s', sell, initialObj.timeSell]
