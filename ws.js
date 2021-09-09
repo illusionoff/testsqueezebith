@@ -1,9 +1,3 @@
-const { wsStartBith } = require('./lib/bithumbpro');//coinConfigBith
-// const { writtenCSV, testWritable, parseCSV, parseCSV2 } = require('./functions/functions');
-// const { coinConfigBith } = require('./lib/bithOrderbook');
+const { wsStartBith } = require('./lib/bithumbpro');
 
-function init() {
-  wsStartBith('subscribe', "ORDERBOOK10:XRP-USDT");
-}
-
-init();
+wsStartBith('subscribe', "ORDERBOOK10:XRP-USDT");
