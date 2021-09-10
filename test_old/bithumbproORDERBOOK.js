@@ -1,13 +1,8 @@
-const fetch = require('node-fetch');
 const fs = require("fs");
-const { goTrade, reconnectTimeMessageClosure, changeTradeArr } = require('../functions/functions');
+const { reconnectTimeMessageClosure, changeTradeArr } = require('../functions/functions');
 const config = require('config');
-
 const ReconnectingWebSocket = require('reconnecting-websocket');
 const WS = require('ws');
-const { exit } = require('process');
-// const WebSocket = require('ws');
-// test
 
 const TRACK_ELEMENT_ORDERBOOK = config.get('TRACK_ELEMENT_ORDERBOOK');
 

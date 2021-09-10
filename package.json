@@ -1,34 +1,19 @@
 {
-  "name": "wobsocketapi",
+  "name": "testsqueezebith",
   "version": "1.0.0",
   "description": "",
-  "main": "ws.js",
+  "main": "app.js",
   "scripts": {
     "start": "ENV=dev ./node_modules/.bin/nodemon --harmony ws.js",
-    "startdsdsds": "ENV=dev ./node_modules/.bin/nodemon --harmony test.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon ws.js"
+    "server": "nodemon app.js"
   },
   "author": "xinming.zhang",
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^3.3.1",
-    "config": "^1.31.0",
-    "crypto-js": "^3.1.9-1",
-    "csv-generate": "^3.4.0",
-    "csv-parse": "^4.16.0",
-    "csv-stringify": "^5.6.2",
-    "moment": "^2.13.0",
-    "node-fetch": "^2.6.1",
+    "config": "^3.3.6",
     "nodemon": "^2.0.7",
-    "once": "^1.4.0",
-    "pako": "^1.0.6",
     "reconnecting-websocket": "^4.4.0",
-    "redis": "^2.4.2",
-    "request": "^2.72.0",
     "ws": "^7.4.6"
-  },
-  "execMap": {
-    "js": "node –harmony"
   }
 }

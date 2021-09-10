@@ -1,4 +1,3 @@
-const fs = require("fs");
 const config = require('config');
 const TIMER_RECONNECT_MESSAGE = config.get('TIMER_RECONNECT_MESSAGE');
 
@@ -10,7 +9,7 @@ function reconnectTimeMessageClosure(ws) {
     timeoutHandle = setTimeout(function () {
       console.log('Reconnect setTimeout messages');
       count = 0;
-      process.exit();
+      return ws.reconnect(1006, 'Reconnect error');
     }, TIMER_RECONNECT_MESSAGE);
   }
 
@@ -35,7 +34,6 @@ function changeTradeArr(initialObj) {
   // выход при устаревании данных
   //  Инициализация первых предыдущих значений
   // проверка изменения значения для предотвращения лишних вычислений
-  // if (initialObj.orderbookFirstPreviousBay && bay != initialObj.orderbookFirstPreviousBay) {
   console.log('function changeTradeArr() initialObj.orderbookFirstPreviousBay=', initialObj.orderbookFirstPreviousBay);
   console.log('function changeTradeArr() initialObj.bay=', bay);
   initialObj.time = new Date().getTime();
