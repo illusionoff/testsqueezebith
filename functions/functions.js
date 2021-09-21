@@ -1,5 +1,8 @@
+const util = require('util');
+
 const config = require('config');
 const TIMER_RECONNECT_MESSAGE = config.get('TIMER_RECONNECT_MESSAGE');
+const TIME_STOP_TEST = config.get('TIME_STOP_TEST');
 
 function reconnectTimeMessageClosure(ws) {
   let count = 0;// для разогрева - т.е не сразу начинать
@@ -79,5 +82,50 @@ function diffMaxIndexS(obj) {
 
   return arrDiffMaxIndex
 }
+function timeStopTestClosure() {
+  let colMessage = 0;
+  let maxTimePeriod = 0;
+  let timeAll = 0;
+  let timePrevious = 0;
+  const timeStart = new Date().getTime();
 
-module.exports = { changeTradeArr, reconnectTimeMessageClosure, diffMaxIndexS }
+  function main(obj) {//{countReconnect, countErrors,name:initialBith.name}
+    let timeNaw = new Date().getTime();
+    colMessage++;
+    let varPeriod = timeNaw - timePrevious;
+    if (colMessage > 20 && varPeriod > maxTimePeriod) { maxTimePeriod = varPeriod }
+    timeAll = Math.round((timeNaw - timeStart) / 1000);// переводим микросекунды в секунды
+    let viewMAxTimePeriod = Math.round((maxTimePeriod) / 1000);
+
+    consoleLogGroup`timeNaw= ${timeNaw}
+    timeStart=${timeStart}
+    colMessage=${colMessage}
+    ${obj.name} viewMAxTimePeriod=${viewMAxTimePeriod}, colMessage=${colMessage}, timeNaw=${timeNaw}, time All=${timeAll}`;
+
+    timePrevious = timeNaw;
+    if (timeAll > TIME_STOP_TEST) {
+      consoleLogGroup`countReconnect = ${obj.countReconnect}
+      countErrors = ${obj.countErrors}
+      |Time OUT sec stop = ${TIME_STOP_TEST}`;
+    }
+  }
+  return (obj) => main(obj)
+}
+function consoleLogGroup(strings, ...expressions) {
+  const inspectOptions = { showHidden: false, colors: true, depth: null }// depth: null глубокий вывод. compact: true минимизация количества строк
+  let strOut = '';
+  function trim(str) { return str.split('\n').map((item) => item.trim()).join('\n') }//удаляем лишние пробелы для устранения эффекта форматирования шаблонных строк VSCode.
+  expressions.forEach((value, i) => {
+    if (i === expressions.length - 1) {
+      strOut += ' ' + trim(strings[i]) +
+        util.formatWithOptions(inspectOptions, value) + ' ' +
+        trim(strings[strings.length - 1]);
+    }// Добавляем последний строковой литерал
+    else strOut += ' ' + trim(strings[i]) + ' ' + util.formatWithOptions(inspectOptions, value);
+  })
+  // console.log(util.formatWithOptions({ showHidden: false, colors: true }, expressions[3]));// depth: null глубокий вывод
+  // console.log(util.inspect(expressions[3], { showHidden: false, colors: true }))// depth: null глубокий вывод объектов и цветом
+  console.log(strOut);
+}
+
+module.exports = { changeTradeArr, reconnectTimeMessageClosure, diffMaxIndexS, timeStopTestClosure, consoleLogGroup }
