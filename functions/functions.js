@@ -3,6 +3,7 @@ const util = require('util');
 const config = require('config');
 const TIMER_RECONNECT_MESSAGE = config.get('TIMER_RECONNECT_MESSAGE');
 const TIME_STOP_TEST = config.get('TIME_STOP_TEST');
+const VERSION = config.get('VERSION');
 
 function reconnectTimeMessageClosure(ws) {
   let count = 0;// для разогрева - т.е не сразу начинать
@@ -98,7 +99,7 @@ function timeStopTestClosure() {
     consoleLogGroup`timeNaw= ${timeNaw}
     timeStart=${timeStart}
     colMessage=${colMessage}
-    ${obj.name} viewMAxTimePeriod=${viewMAxTimePeriod}, colMessage=${colMessage}, timeNaw=${timeNaw}, time All=${timeAll}`;
+    ${obj.name}, Ver: ${VERSION}  viewMAxTimePeriod=${viewMAxTimePeriod}, colMessage=${colMessage}, timeNaw=${timeNaw}, time All=${timeAll}`;
 
     timePrevious = timeNaw;
     if (timeAll > TIME_STOP_TEST) {
