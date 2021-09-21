@@ -126,4 +126,28 @@ function consoleLogGroup(strings, ...expressions) {
   console.log(strOut);
 }
 
-module.exports = { changeTradeArr, reconnectTimeMessageClosure, diffMaxIndexS, timeStopTestClosure, consoleLogGroup }
+function squeeze(arr, strItem) {
+  //  если данных нет или мало
+  if (arr.length < 2) return false
+  let arrTemp = arr.map((item) => item[strItem]);// цена это второй элемент сейчас в массиве для bay и третий для sell
+  let sum = arrTemp.reduce((accum, item) => {
+    accum += item;
+    return accum;
+  });
+  let average = sum / arrTemp.length;
+  let averageRound = average.round(8);//округляем
+  let max = Math.max(...arrTemp);
+  let min = Math.min(...arrTemp);
+  // отклонение max - min от среднего
+  let flag = (max - min) / averageRound > config.get('MIN_SQUEEZE_PERCENT') ? true : false;
+
+  consoleLogGroup`((max - min) / averageRound)= ${(max - min) / averageRound}
+  sum = ${ sum}
+  average = ${average}
+  averageRound= ${averageRound}
+  max = ${max}
+  min = ${min}
+  flag = ${flag}`;
+  return flag
+}
+module.exports = { changeTradeArr, reconnectTimeMessageClosure, diffMaxIndexS, timeStopTestClosure, consoleLogGroup, squeeze }
