@@ -37,16 +37,14 @@ function changeTradeArr(initialObj) {
   // выход при устаревании данных
   //  Инициализация первых предыдущих значений
   // проверка изменения значения для предотвращения лишних вычислений
-  console.log('function changeTradeArr() initialObj.orderbookFirstPreviousBay=', initialObj.orderbookFirstPreviousBay);
-  console.log('function changeTradeArr() initialObj.bay=', bay);
   initialObj.time = new Date().getTime();
   let diffTimeServer = initialObj.time - initialObj.messageObj.timestamp;
   let diffTimeVer = initialObj.messageObj.timestamp - parseInt(initialObj.messageObj.data.ver, 10);
-
   initialObj.orderbookFirstPreviousBay = bay;
-  console.log('bay=', bay);
   initialObj.orderbookFirstPreviousSell = sell;
-  console.log('sell=', sell);
+  consoleLogGroup`changeTradeArr() initialObj.orderbookFirstPreviousBay = ${initialObj.orderbookFirstPreviousBay}
+  sell = ${sell}
+  bay= ${bay}`;
   const arrLengthBay = initialObj.arrChart.length;
   initialObj.arrChart.push([arrLengthBay, bay, sell, initialObj.time, initialObj.messageObj.data.ver, diffTimeVer, initialObj.messageObj.timestamp, diffTimeServer]);
   return true
