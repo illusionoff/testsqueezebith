@@ -52,7 +52,7 @@ function changeTradeArr(initialObj) {
 }
 
 //  находим наибольшоую разницу
-function diffMaxIndex(obj, arrDiffMaxIndex) { // true = sell, false = bay
+function diffMaxIndex(obj, arrDiffMaxIndex) { // obj = { arr: arr, sell: true } true = sell, false = bay
   let diffMax = obj.arr.reduce((accum, item, index, arr) => {
     let preIndex = 0;
     preIndex = index - 1;
@@ -73,14 +73,13 @@ function diffMaxIndex(obj, arrDiffMaxIndex) { // true = sell, false = bay
 function diffMaxIndexS(obj) {
   //obj = { arr: arr, sell: true }
   let arrDiffMaxIndex = [];
-
   for (let i = 0; i < 5; i++) {// выводим 5 самых больших отклонений
     const resDiff = diffMaxIndex(obj, arrDiffMaxIndex);
     resDiff != 0 ? arrDiffMaxIndex.push(resDiff) : false
   }
-
   return arrDiffMaxIndex
 }
+
 function timeStopTestClosure() {
   let colMessage = 0;
   let maxTimePeriod = 0;
@@ -110,6 +109,7 @@ function timeStopTestClosure() {
   }
   return (obj) => main(obj)
 }
+
 function consoleLogGroup(strings, ...expressions) {
   const inspectOptions = { showHidden: false, colors: true, depth: null }// depth: null глубокий вывод. compact: true минимизация количества строк
   let strOut = '';

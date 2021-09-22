@@ -1,14 +1,14 @@
 {
   "name": "testsqueezebith",
-  "version": "1.0.0",
-  "description": "",
+  "version": "10.0.0",
+  "description": "criptoarbitr test squeezes bithumb.pro nodejs",
   "main": "app.js",
   "scripts": {
     "start": "ENV=dev ./node_modules/.bin/nodemon --harmony ws.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon app.js"
   },
-  "author": "xinming.zhang",
+  "author": "Siniakou Alex <siniakoualex@gmail.ru>",
   "license": "ISC",
   "dependencies": {
     "config": "^3.3.6",
