@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon app.js"
   },
-  "author": "Siniakou Alex <siniakoualex@gmail.ru>",
+  "author": "Siniakou Alex <siniakoualex@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "config": "^3.3.6",
