@@ -151,4 +151,40 @@ function squeeze(arr, strItem) {
   flag = ${flag}`;
   return flag
 }
-module.exports = { changeTradeArr, reconnectTimeMessageClosure, diffMaxIndexS, timeStopTestClosure, consoleLogGroup, squeeze }
+
+let timerClosure = function (timerConfigObj) {
+  // {period: 1000,funStart:funStart,funEnd:funEnd}
+  let period = timerConfigObj.period;
+  let funStart = timerConfigObj.funStart || function () { console.log('null function funStart') };
+  let funEnd = timerConfigObj.funEnd || function () { console.log('null function funEnd') };
+
+  let id;
+  function start() {
+    stop()
+    id = setInterval(function () {
+      // ws.send(JSON.stringify({ "cmd": "ping" }));
+      // let timeNaw = new Date().getTime();
+      // console.log('time ping bith start ======================================', timeNaw);
+      funStart();
+    }, period);
+  }
+
+  function stop() {
+    clearInterval(id);
+    // let timeNaw = new Date().getTime();
+    // console.log('stopPing');
+    // console.log('time pong bith stop ======================================', timeNaw);
+    funEnd();
+  }
+
+  return { start, stop }
+};
+
+let funStartPing = () => {
+  let timeNaw = new Date().getTime();
+  console.log('This  Ping start timeNaw=', timeNaw);
+  // ws.send(JSON.stringify({ "cmd": "ping" }));
+  // process.exit();
+};
+
+module.exports = { changeTradeArr, reconnectTimeMessageClosure, diffMaxIndexS, timeStopTestClosure, consoleLogGroup, squeeze, timerClosure, funStartPing }
