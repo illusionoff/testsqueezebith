@@ -157,15 +157,21 @@ let timerClosure = function (timerConfigObj) {
   let period = timerConfigObj.period;
   let funStart = timerConfigObj.funStart || function () { console.log('null function funStart') };
   let funEnd = timerConfigObj.funEnd || function () { console.log('null function funEnd') };
+  let counter = 0;
+
+  // funStartArguments
 
   let id;
   function start() {
-    stop()
+    clearInterval(id);
     id = setInterval(function () {
       // ws.send(JSON.stringify({ "cmd": "ping" }));
       // let timeNaw = new Date().getTime();
       // console.log('time ping bith start ======================================', timeNaw);
-      funStart();
+      // console.log('timerConfigObj.funStartArguments=', timerConfigObj.funStartArguments);
+      funStart(...timerConfigObj.funStartArguments);
+      counter++;
+      // if (counter > 2) process.exit();
     }, period);
   }
 
@@ -174,16 +180,16 @@ let timerClosure = function (timerConfigObj) {
     // let timeNaw = new Date().getTime();
     // console.log('stopPing');
     // console.log('time pong bith stop ======================================', timeNaw);
-    funEnd();
+    funEnd(...timerConfigObj.funEndArguments);
   }
 
   return { start, stop }
 };
 
-let funStartPing = () => {
+let funStartPing = (ws) => {
   let timeNaw = new Date().getTime();
   console.log('This  Ping start timeNaw=', timeNaw);
-  // ws.send(JSON.stringify({ "cmd": "ping" }));
+  ws.send(JSON.stringify({ "cmd": "ping" }));
   // process.exit();
 };
 
