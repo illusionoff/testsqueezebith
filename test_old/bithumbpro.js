@@ -1,4 +1,5 @@
-const { changeTradeArr, timeStopTestClosure, consoleLogGroup, timerClosure, funStartPing, funEndPing, funStartReconnect, funStartWritting } = require('../functions/functions');
+const fs = require("fs");
+const { changeTradeArr, diffMaxIndexS, timeStopTestClosure, consoleLogGroup, squeeze, timerClosure, funStartPing, funEndPing, funStartReconnect, computes } = require('../functions/functions');
 const config = require('config');
 
 const ReconnectingWebSocket = require('reconnecting-websocket');
@@ -57,8 +58,43 @@ let timerWritting;
 // function startTimerWritting(arrChart) {
 // clearInterval(timerWritting);
 // timerWritting = setInterval(function () {
+let funStartWritting = (arrChart) => {
+  const timeNow = new Date().getTime();
+  let result = squeeze(arrChart, 1);
+  let result2 = squeeze(arrChart, 2);
+  console.log('result=', result);
+  console.log('result2=', result2);
+  // для теста создания файла отчета result = true; config/default.json -> "ANALYSIS_PERIOD": 300000 поменять на 50000 "MIN_SQUEEZE_PERCENT": 0.015 поменять на -0.015
+  result = true;
+  if (result || result2) {
+    let str = '';
+    const arrBay = arrChart.map((item) => item + '\n'); //"\r\n"
+    str += arrBay.join('');
+    console.log('str=', str);
+    let computesBay = computes(arrChart);
+    let arrTempBay = arrChart.map((item) => item[1]);
+    let arrTempSell = arrChart.map((item) => item[2]);
+    const resDiffMaxIndexSell = diffMaxIndexS({ arr: arrTempSell, sell: true });
+    const resDiffMaxIndexBay = diffMaxIndexS({ arr: arrTempBay, sell: false });
+    const strComputes = `\n averag diffTimeVer = ${computesBay.diffTimeVer} \n averag diffTimeServer = ${computesBay.diffTimeServer}`;
 
+    consoleLogGroup`arrTemp.arrTempSell.length = ${arrTempSell.length}
+      arrTempSell = ${arrTempSell}
+      arrTempBay = ${arrTempBay}
+      diffMaxIndexS({ arr: arrTemp, sell: true }) = ${resDiffMaxIndexSell}
+      diffMaxIndexS({ arr: arrTemp, sell: false }) = ${resDiffMaxIndexBay}
+      strComputes = ${strComputes}`;
 
+    const resDiffMaxIndex = `\n resDiffMaxIndexSell = ${resDiffMaxIndexSell}\n resDiffMaxIndexBay = ${resDiffMaxIndexBay}`;
+    str += strComputes + resDiffMaxIndex;
+    fs.writeFile(`logs/${timeNow}_testQueezeBith.csv`, str, function (error) {
+      if (error) throw error;
+      console.log("Запись файла завершена.");
+    });
+  }
+  // обнуляем массив
+  arrChart.length = 0;
+}
 // }, ANALYSIS_PERIOD);
 // }
 
@@ -84,25 +120,9 @@ function wsStartBith(cmd, args) {
     funStartArguments: [ws], warming: 1
   };
 
-  setTimeout(() => {
-    // console.log('warming=', warming);
-    ws.close();
-  }, 30_000);
-
-  // let funEndWritting = () => {
-  //   let timeNaw = new Date().getTime();
-  //   console.log('funEndWritting ws.close');
-  //   process.exit();
-  // };
-
-  // let funStartWritting2 = () => {
-  //   let timeNaw = new Date().getTime();
-  //   console.log('funStartWritting2 TEST');
-  //   process.exit();
-  // };
   let timerConfigWritting = {
     period: ANALYSIS_PERIOD, funStart: funStartWritting,
-    funStartArguments: [initialBith.arrChart],
+    funStartArguments: [initialBith.arrChart]
   };
 
   let timerPing = timerClosure(timerConfigPing);

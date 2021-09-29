@@ -1,4 +1,5 @@
 const util = require('util');
+const fs = require("fs");
 
 const config = require('config');
 const TIME_STOP_TEST = config.get('TIME_STOP_TEST');
@@ -125,13 +126,18 @@ function squeeze(arr, strItem) {
 }
 
 let timerClosure = function (timerConfigObj) {
+  // let timerClosure = function ({period, funStart=function () { console.log('null function funStart') }, funEnd: funEndPing,
+  //   funStartArguments: [], funEndArguments: [], warming: 1 }) {
   // {period: TIMER_PING, funStart: funStartPing, funEnd: funEndPing,
   // funStartArguments: [], funEndArguments: [], warming: 1 }
   let period = timerConfigObj.period;
   let funStart = timerConfigObj.funStart || function () { console.log('null function funStart') };
   let funEnd = timerConfigObj.funEnd || function () { console.log('null function funEnd') };
+  let funStartArguments = timerConfigObj.funStartArguments || []
+  let funEndArguments = timerConfigObj.funStartArguments || []
   let id;
   let warming = timerConfigObj.warming || 0;
+
   let count = 0;// для разогрева - т.е не сразу начинать
   function start() {
     clearInterval(id);
@@ -139,14 +145,14 @@ let timerClosure = function (timerConfigObj) {
     if (count > warming) {
       id = setInterval(() => {
         // console.log('warming=', warming);
-        funStart(...timerConfigObj.funStartArguments);
+        funStart(...funStartArguments);
       }, period);
     }
   }
 
   function stop() {
     clearInterval(id);
-    funEnd(...timerConfigObj.funEndArguments);
+    funEnd(...funEndArguments);
   }
 
   return { start, stop }
@@ -165,4 +171,57 @@ let funEndPing = () => {
 let funStartReconnect = (ws) => {
   return ws.reconnect(1006, 'Reconnect error');
 };
-module.exports = { changeTradeArr, diffMaxIndexS, timeStopTestClosure, consoleLogGroup, squeeze, timerClosure, funStartPing, funEndPing, funStartReconnect }
+
+function average(arr, strItem) {
+  const sum = arr.reduce((accum, item) => accum += item[strItem], arr[0][strItem]);
+  const average = sum / arr.length;
+  // const averageRound = average.round(1);//округляем
+  const averageRound = Math.round(average);
+  return averageRound
+}
+function computes(arr) {
+  const diffTimeVer = average(arr, 5);
+  const diffTimeServer = average(arr, 7);
+  console.log('computes(arr) diffTimeVer=', diffTimeVer);
+  console.log('computes(arr) diffTimeServer=', diffTimeServer);
+  return { diffTimeVer, diffTimeServer }
+}
+
+let funStartWritting = (arrChart) => {
+  const timeNow = new Date().getTime();
+  let result = squeeze(arrChart, 1);
+  let result2 = squeeze(arrChart, 2);
+  console.log('result=', result);
+  console.log('result2=', result2);
+  // для теста создания файла отчета result = true; config/default.json -> "ANALYSIS_PERIOD": 300000 поменять на 50000 "MIN_SQUEEZE_PERCENT": 0.015 поменять на -0.015
+  result = true;
+  if (result || result2) {
+    let str = '';
+    const arrBay = arrChart.map((item) => item + '\n'); //"\r\n"
+    str += arrBay.join('');
+    console.log('str=', str);
+    let computesBay = computes(arrChart);
+    let arrTempBay = arrChart.map((item) => item[1]);
+    let arrTempSell = arrChart.map((item) => item[2]);
+    const resDiffMaxIndexSell = diffMaxIndexS({ arr: arrTempSell, sell: true });
+    const resDiffMaxIndexBay = diffMaxIndexS({ arr: arrTempBay, sell: false });
+    const strComputes = `\n averag diffTimeVer = ${computesBay.diffTimeVer} \n averag diffTimeServer = ${computesBay.diffTimeServer}`;
+
+    consoleLogGroup`arrTemp.arrTempSell.length = ${arrTempSell.length}
+      arrTempSell = ${arrTempSell}
+      arrTempBay = ${arrTempBay}
+      diffMaxIndexS({ arr: arrTemp, sell: true }) = ${resDiffMaxIndexSell}
+      diffMaxIndexS({ arr: arrTemp, sell: false }) = ${resDiffMaxIndexBay}
+      strComputes = ${strComputes}`;
+
+    const resDiffMaxIndex = `\n resDiffMaxIndexSell = ${resDiffMaxIndexSell}\n resDiffMaxIndexBay = ${resDiffMaxIndexBay}`;
+    str += strComputes + resDiffMaxIndex;
+    fs.writeFile(`logs/${timeNow}_testQueezeBith.csv`, str, function (error) {
+      if (error) throw error;
+      console.log("Запись файла завершена.");
+    });
+  }
+  // обнуляем массив
+  arrChart.length = 0;
+}
+module.exports = { changeTradeArr, timeStopTestClosure, consoleLogGroup, timerClosure, funStartPing, funEndPing, funStartReconnect, funStartWritting }
