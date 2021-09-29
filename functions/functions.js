@@ -8,29 +8,48 @@ const VERSION = config.get('VERSION');
 function reconnectTimeMessageClosure(ws) {
   let count = 0;// для разогрева - т.е не сразу начинать
   let timeoutHandle;
+  let counttest = 0;// для разогрева - т.е не сразу начинать
+  // let warming = timerConfigObj.warming || 1;
+  let warming = 3;
+
+
+  // function start() {
+  //   // console.log('start clearTimeout');
+
+  //   // timeoutHandle = setTimeout(function () {
+  //   //   console.log('Reconnect setTimeout messages');
+  //   //   count = 0;
+  //   //   counttest++;
+  //   //   console.log('counttest>5');
+  //   //   if (counttest > 5) process.exit();
+  //   //   return ws.reconnect(1006, 'Reconnect error');
+  //   // }, TIMER_RECONNECT_MESSAGE);
+  // }
+
+  // function stop() {
+  //   clearTimeout(timeoutHandle);
+  // }
 
   function start() {
-    timeoutHandle = setTimeout(function () {
-      console.log('Reconnect setTimeout messages');
-      count = 0;
-      return ws.reconnect(1006, 'Reconnect error');
-    }, TIMER_RECONNECT_MESSAGE);
-  }
-
-  function stop() {
-    clearTimeout(timeoutHandle);
-  }
-
-  function startReconnect() {
     count++;
     console.log('function  count=', count);
-    if (count > 1) { // действие reconnect только после второго запуска функции
+    if (count > warming) { // действие reconnect только после второго запуска функции
       console.log('start time');
-      stop();
-      start();
+      clearTimeout(timeoutHandle);
+      // start();
+      console.log('start clearTimeout');
+
+      timeoutHandle = setTimeout(function () {
+        console.log('Reconnect setTimeout messages');
+        count = 0;
+        counttest++;
+        console.log('counttest>5');
+        if (counttest > 5) process.exit();
+        return ws.reconnect(1006, 'Reconnect error');
+      }, TIMER_RECONNECT_MESSAGE);
     }
   }
-  return (ws) => startReconnect(ws)
+  return (ws) => start(ws)
 }
 function changeTradeArr(initialObj) {
   let bay = initialObj.bay;
@@ -159,11 +178,17 @@ let timerClosure = function (timerConfigObj) {
   let funStart = timerConfigObj.funStart || function () { console.log('null function funStart') };
   let funEnd = timerConfigObj.funEnd || function () { console.log('null function funEnd') };
   let id;
+  let warming = timerConfigObj.warming || 0;
+  let count = 0;// для разогрева - т.е не сразу начинать
   function start() {
     clearInterval(id);
-    id = setInterval(function () {
-      funStart(...timerConfigObj.funStartArguments);
-    }, period);
+    count++;
+    if (count > warming) {
+      id = setInterval(function () {
+        // console.log('warming=', warming);
+        funStart(...timerConfigObj.funStartArguments);
+      }, period);
+    }
   }
 
   function stop() {
@@ -182,6 +207,9 @@ let funStartPing = (ws) => {
 let funEndPing = () => {
   let timeNaw = new Date().getTime();
   console.log('This Ping End timeNaw=', timeNaw);
-  process.exit()
 };
-module.exports = { changeTradeArr, reconnectTimeMessageClosure, diffMaxIndexS, timeStopTestClosure, consoleLogGroup, squeeze, timerClosure, funStartPing, funEndPing }
+
+let funStartReconnect = (ws) => {
+  return ws.reconnect(1006, 'Reconnect error');
+};
+module.exports = { changeTradeArr, reconnectTimeMessageClosure, diffMaxIndexS, timeStopTestClosure, consoleLogGroup, squeeze, timerClosure, funStartPing, funEndPing, funStartReconnect }
