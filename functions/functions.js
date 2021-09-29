@@ -153,33 +153,21 @@ function squeeze(arr, strItem) {
 }
 
 let timerClosure = function (timerConfigObj) {
-  // {period: 1000,funStart:funStart,funEnd:funEnd}
+  // {period: TIMER_PING, funStart: funStartPing, funEnd: funEndPing,
+  // funStartArguments: [], funEndArguments: [] }
   let period = timerConfigObj.period;
   let funStart = timerConfigObj.funStart || function () { console.log('null function funStart') };
   let funEnd = timerConfigObj.funEnd || function () { console.log('null function funEnd') };
-  let counter = 0;
-
-  // funStartArguments
-
   let id;
   function start() {
     clearInterval(id);
     id = setInterval(function () {
-      // ws.send(JSON.stringify({ "cmd": "ping" }));
-      // let timeNaw = new Date().getTime();
-      // console.log('time ping bith start ======================================', timeNaw);
-      // console.log('timerConfigObj.funStartArguments=', timerConfigObj.funStartArguments);
       funStart(...timerConfigObj.funStartArguments);
-      counter++;
-      // if (counter > 2) process.exit();
     }, period);
   }
 
   function stop() {
     clearInterval(id);
-    // let timeNaw = new Date().getTime();
-    // console.log('stopPing');
-    // console.log('time pong bith stop ======================================', timeNaw);
     funEnd(...timerConfigObj.funEndArguments);
   }
 
@@ -190,7 +178,10 @@ let funStartPing = (ws) => {
   let timeNaw = new Date().getTime();
   console.log('This  Ping start timeNaw=', timeNaw);
   ws.send(JSON.stringify({ "cmd": "ping" }));
-  // process.exit();
 };
-
-module.exports = { changeTradeArr, reconnectTimeMessageClosure, diffMaxIndexS, timeStopTestClosure, consoleLogGroup, squeeze, timerClosure, funStartPing }
+let funEndPing = () => {
+  let timeNaw = new Date().getTime();
+  console.log('This Ping End timeNaw=', timeNaw);
+  process.exit()
+};
+module.exports = { changeTradeArr, reconnectTimeMessageClosure, diffMaxIndexS, timeStopTestClosure, consoleLogGroup, squeeze, timerClosure, funStartPing, funEndPing }
