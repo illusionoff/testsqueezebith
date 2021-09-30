@@ -2,11 +2,11 @@
 const config = require('config');
 
 const { changeTradeArr } = require('./separate/changeTradeArr');
-const { funStartWritting } = require('./separate/funStartWritting');
 const { consoleLogGroup } = require('./separate/consoleLogGroup');
 const { timeStopTestClosure } = require('./separate/timeStopTestClosure');
 const { timerClosure } = require('./separate/timerClosure');
-const { funStartPing, funEndPing, funStartReconnect } = require('./separate/funsStartEnd');
+const { funStartWritting } = require('./separate/timeClosure/funStartWritting');
+const { funStartPing, funEndPing, funStartReconnect } = require('./separate/timeClosure/funsStartEnd');
 
 
 module.exports = { changeTradeArr, timeStopTestClosure, timerClosure, funStartWritting, consoleLogGroup, funStartPing, funEndPing, funStartReconnect }

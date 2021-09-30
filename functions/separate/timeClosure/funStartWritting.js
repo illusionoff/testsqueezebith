@@ -1,6 +1,6 @@
 const fs = require("fs");
 const config = require('config');
-const { consoleLogGroup } = require('./consoleLogGroup');
+const { consoleLogGroup } = require('../consoleLogGroup');
 
 let funStartWritting = (arrChart) => {
   const timeNow = new Date().getTime();
