@@ -6,7 +6,7 @@ const { funStartWritting } = require('./separate/funStartWritting');
 const { consoleLogGroup } = require('./separate/consoleLogGroup');
 const { timeStopTestClosure } = require('./separate/timeStopTestClosure');
 const { timerClosure } = require('./separate/timerClosure');
-const { funStartPing, funEndPing, funStartReconnect } = require('./separate/timerClosure/funsStartEnd');
+const { funStartPing, funEndPing, funStartReconnect } = require('./separate/funsStartEnd');
 
 
 module.exports = { changeTradeArr, timeStopTestClosure, timerClosure, funStartWritting, consoleLogGroup, funStartPing, funEndPing, funStartReconnect }
