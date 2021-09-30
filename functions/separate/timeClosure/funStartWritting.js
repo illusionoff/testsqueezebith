@@ -9,7 +9,7 @@ let funStartWritting = (arrChart) => {
   console.log('result=', result);
   console.log('result2=', result2);
   // для теста создания файла отчета result = true; config/default.json -> "ANALYSIS_PERIOD": 300000 поменять на 50000 "MIN_SQUEEZE_PERCENT": 0.015 поменять на -0.015
-  result = true;
+  // result = true;
   if (result || result2) {
     let str = '';
     const arrBay = arrChart.map((item) => item + '\n'); //"\r\n"
