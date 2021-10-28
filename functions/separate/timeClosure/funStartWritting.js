@@ -43,7 +43,7 @@ let funStartWritting = (arrChart) => {
 function squeeze(arr, strItem) {
   //  если данных нет или мало
   if (arr.length < 2) return false
-  let arrTemp = arr.map((item) => item[strItem]);// цена это второй элемент сейчас в массиве для bay и третий для sell
+  let arrTemp = arr.map((item) => item[strItem]);// цена это второй элемент сейчас в массиве для buy и третий для sell
   let sum = arrTemp.reduce((accum, item) => {
     accum += item;
     return accum;
@@ -65,7 +65,7 @@ function squeeze(arr, strItem) {
   return flag
 }
 //  находим наибольшоую разницу
-function diffMaxIndex(obj, arrDiffMaxIndex) { // obj = { arr: arr, sell: true } true = sell, false = bay
+function diffMaxIndex(obj, arrDiffMaxIndex) { // obj = { arr: arr, sell: true } true = sell, false = buy
   let diffMax = obj.arr.reduce((accum, item, index, arr) => {
     let preIndex = 0;
     preIndex = index - 1;

@@ -21,7 +21,7 @@ let initialBith = {
   messageObj: {},
   orderbookFirstPreviousBay: undefined,
   orderbookFirstPreviousSell: undefined,
-  bay: undefined,
+  buy: undefined,
   sell: undefined,
   arrChart: []
 }
@@ -168,11 +168,11 @@ function wsStartBith(cmd, args) {
       initialBith.messageObj.timestamp = ${initialBith.messageObj.timestamp}
       Ver: ${VERSION}`;
 
-      initialBith.bay = Number(initialBith.messageObj.data.b[TRACK_ELEMENT_ORDERBOOK][0]);
+      initialBith.buy = Number(initialBith.messageObj.data.b[TRACK_ELEMENT_ORDERBOOK][0]);
       initialBith.sell = Number(initialBith.messageObj.data.s[TRACK_ELEMENT_ORDERBOOK][0]);
       initialBith.initialWs = true;
 
-      if (!Boolean(initialBith.orderbookFirstPreviousBay)) initialBith.orderbookFirstPreviousBay = initialBith.bay
+      if (!Boolean(initialBith.orderbookFirstPreviousBay)) initialBith.orderbookFirstPreviousBay = initialBith.buy
       if (!Boolean(initialBith.orderbookFirstPreviousSell)) initialBith.orderbookFirstPreviousSell = initialBith.sell
       if (initialBith.orderbookFirstPreviousBay && initialBith.orderbookFirstPreviousSell) {
         initialBith.globalFlag = true;
