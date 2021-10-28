@@ -60,13 +60,13 @@ function changeTradeArr(initialObj) {
   initialObj.time = new Date().getTime();
   let diffTimeServer = initialObj.time - initialObj.messageObj.timestamp;
   let diffTimeVer = initialObj.messageObj.timestamp - parseInt(initialObj.messageObj.data.ver, 10);
-  initialObj.orderbookFirstPreviousBay = buy;
+  initialObj.orderbookFirstPreviousBuy = buy;
   initialObj.orderbookFirstPreviousSell = sell;
-  consoleLogGroup`changeTradeArr() initialObj.orderbookFirstPreviousBay = ${initialObj.orderbookFirstPreviousBay}
+  consoleLogGroup`changeTradeArr() initialObj.orderbookFirstPreviousBuy = ${initialObj.orderbookFirstPreviousBuy}
   sell = ${sell}
   buy= ${buy}`;
-  const arrLengthBay = initialObj.arrChart.length;
-  initialObj.arrChart.push([arrLengthBay, buy, sell, initialObj.time, initialObj.messageObj.data.ver, diffTimeVer, initialObj.messageObj.timestamp, diffTimeServer]);
+  const arrLengthBuy = initialObj.arrChart.length;
+  initialObj.arrChart.push([arrLengthBuy, buy, sell, initialObj.time, initialObj.messageObj.data.ver, diffTimeVer, initialObj.messageObj.timestamp, diffTimeServer]);
   return true
 }
 

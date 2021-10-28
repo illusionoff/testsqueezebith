@@ -28,12 +28,12 @@ let initialBith = {
   initialFetchURL: false,
   messageObj: {},
   messageEdit: {},
-  allOrderbookBay: [],
+  allOrderbookBuy: [],
   allOrderbookSell: [],
   ver: 0,
-  orderbookFirstPreviousBay: undefined,
+  orderbookFirstPreviousBuy: undefined,
   orderbookFirstPreviousSell: undefined,
-  priceAndComissionsBay: 0,
+  priceAndComissionsBuy: 0,
   priceAndComissionsSell: 0,
   takerComissions: 0,
   makerComissions: 0,
@@ -44,13 +44,13 @@ let initialBith = {
   buyQuantity: undefined,
   sellQuantity: undefined,
   status: 0,
-  indexLeveragesOrderbookBay: [],
+  indexLeveragesOrderbookBuy: [],
   indexLeveragesOrderbookSell: [],
-  timeBay: undefined,
+  timeBuy: undefined,
   timeSell: undefined,
   time: undefined,
-  // objArrs: { arrBay: [], arrSell: [], arrTimeBay: [], arrTimeSell: [] }
-  // objArrs: { arrBay: [], arrSell: [] }
+  // objArrs: { arrBuy: [], arrSell: [], arrTimeBuy: [], arrTimeSell: [] }
+  // objArrs: { arrBuy: [], arrSell: [] }
   arrChart: { b: [], s: [] }
 }
 let intervalId = 0;
@@ -136,10 +136,10 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
   let timerWritting;
   function startTimerWritting() {
     timerWritting = setInterval(function () {
-      // //objArrs: { arrBay: [], arrSell: [], arrTimeBay: [], arrTimeSell: [] }
+      // //objArrs: { arrBuy: [], arrSell: [], arrTimeBuy: [], arrTimeSell: [] }
       // //let resultArr =
-      // //let strBay = initialBith.objArrs.arrBay.map((item) => item ); //"\r\n"
-      // //let strBay = initialBith.arrChart.join('\n');
+      // //let strBuy = initialBith.objArrs.arrBuy.map((item) => item ); //"\r\n"
+      // //let strBuy = initialBith.arrChart.join('\n');
       // const timeNow = new Date().getTime();
       // console.log('initialBith.arrChart=', initialBith.arrChart);
       // let b = initialBith.arrChart.b.map((item) => item[0]);
@@ -162,10 +162,10 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
       // console.log('flag=', flag);
 
 
-      // let strBay = initialBith.arrChart.b.map((item) => item + '\n'); //"\r\n"
-      // console.log('strBay1=', strBay);
-      // strBay = initialBith.arrChart.b.join('\n');
-      // console.log('strBay2=', strBay);
+      // let strBuy = initialBith.arrChart.b.map((item) => item + '\n'); //"\r\n"
+      // console.log('strBuy1=', strBuy);
+      // strBuy = initialBith.arrChart.b.join('\n');
+      // console.log('strBuy2=', strBuy);
       // process.exit();
 
       //// let b = a.reduce( (accum, item) => {
@@ -175,12 +175,12 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
       ////   console.log('---------');
       // //process.exit();
       // if (flag) {
-      //   let strBay = initialBith.arrChart.b.map((item) => item + '\n'); //"\r\n"
-      //   console.log('strBay1=', strBay);
-      //   strBay = initialBith.arrChart.b.join('\n');
-      //   console.log('strBay2=', strBay);
+      //   let strBuy = initialBith.arrChart.b.map((item) => item + '\n'); //"\r\n"
+      //   console.log('strBuy1=', strBuy);
+      //   strBuy = initialBith.arrChart.b.join('\n');
+      //   console.log('strBuy2=', strBuy);
       //   process.exit();
-      //   fs.writeFile(`logs/${timeNow}_testQueezeBith.txt`, strBay, function (error) {
+      //   fs.writeFile(`logs/${timeNow}_testQueezeBith.txt`, strBuy, function (error) {
 
       //     if (error) throw error; // если возникла ошибка
       //     console.log("Асинхронная запись файла завершена. Содержимое файла:");
@@ -248,13 +248,13 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
       timePrevious = timeNaw;
       if (timeAll > 3600 * 12) {
         // // тест
-        // console.log('initialBith.allOrderbookBay');
+        // console.log('initialBith.allOrderbookBuy');
         // for (let i = 0; i < 10; i++) {
-        //   console.log(`allOrderbookBay[${i}]= ${initialBith.allOrderbookBay[i]}`);
+        //   console.log(`allOrderbookBuy[${i}]= ${initialBith.allOrderbookBuy[i]}`);
         // }
         // console.log('initialBith.allOrderbookSell');
         // for (let i = 0; i < 10; i++) {
-        //   console.log(`allOrderbookBay[${i}]= ${initialBith.allOrderbookSell[i]}`);
+        //   console.log(`allOrderbookBuy[${i}]= ${initialBith.allOrderbookSell[i]}`);
         // }
         console.log('TEST_ORDERBOOB=');
         console.log('0000 7tesTimeCount=', tesTimeCount);
@@ -273,11 +273,11 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
 
     if (initialBith.messageObj.code === "00006") {
       initialBith.ver = Number(initialBith.messageObj.data.ver);
-      initialBith.allOrderbookBay = initialBith.messageObj.data.b.slice();
+      initialBith.allOrderbookBuy = initialBith.messageObj.data.b.slice();
       initialBith.allOrderbookSell = initialBith.messageObj.data.s.slice();
       //замена функционала на аналогичное как у Gate
-      // orderbookFirstPreviousBay = allOrderbookBay[TRACK_ELEMENT_ORDERBOOK].slice();
-      // orderbookFirstPreviousSell = allOrderbookBay[TRACK_ELEMENT_ORDERBOOK].slice();
+      // orderbookFirstPreviousBuy = allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK].slice();
+      // orderbookFirstPreviousSell = allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK].slice();
       console.log('initialBith.messageObj.data.b.length=', initialBith.messageObj.data.b.length);
       console.log('initialBith.messageObj.data.s.length=', initialBith.messageObj.data.s.length);
 
@@ -303,12 +303,12 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
       if (Number(initialBith.messageObj.data.ver) === initialBith.ver + 1) {
         initialBith.ver++;
         console.log('_____________________________________________________________TRUE');
-        console.log('Было***************************************************Bay');
+        console.log('Было***************************************************Buy');
         // for (let i = 0; i < 10; i++) {
-        //   console.log(allOrderbookBay[i]);
+        //   console.log(allOrderbookBuy[i]);
         //   // console.log(allOrderbookSell[i]);
         // }
-        console.log('initialBith.allOrderbookBay[TRACK_ELEMENT_ORDERBOOK]=', initialBith.allOrderbookBay[TRACK_ELEMENT_ORDERBOOK]);
+        console.log('initialBith.allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK]=', initialBith.allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK]);
 
         console.log('Было***************************************************Sell');
         // for (let i = 0; i < 10; i++) {
@@ -320,17 +320,17 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
         console.log('initialBith.messageObj.data.b:', initialBith.messageObj.data.b);//для отладки себе включить
         console.log('initialBith.messageObj.data.s:', initialBith.messageObj.data.s);//для отладки себе включить
 
-        if (initialBith.messageObj.data.b.length === 1) orderbookChange(initialBith.allOrderbookBay, initialBith.messageObj.data.b);
+        if (initialBith.messageObj.data.b.length === 1) orderbookChange(initialBith.allOrderbookBuy, initialBith.messageObj.data.b);
         if (initialBith.messageObj.data.s.length === 1) orderbookChange(initialBith.allOrderbookSell, initialBith.messageObj.data.s);
 
-        console.log('initialBith.allOrderbookBay.length=((((((((((((((((((((((((((((((((((', initialBith.allOrderbookBay.length);
+        console.log('initialBith.allOrderbookBuy.length=((((((((((((((((((((((((((((((((((', initialBith.allOrderbookBuy.length);
         console.log('initialBith.allOrderbookSell.length=((((((((((((((((((((((((((((((((((', initialBith.allOrderbookSell.length);
-        console.log('Стало***************************************************Bay');
+        console.log('Стало***************************************************Buy');
         // for (let i = 0; i < 10; i++) {
-        //   console.log(allOrderbookBay[i]);
+        //   console.log(allOrderbookBuy[i]);
         //   // console.log(allOrderbookSell[i]);
         // }
-        console.log('initialBith.allOrderbookBay[TRACK_ELEMENT_ORDERBOOK]=', initialBith.allOrderbookBay[TRACK_ELEMENT_ORDERBOOK]);
+        console.log('initialBith.allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK]=', initialBith.allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK]);
 
         console.log('Стало***************************************************Sell');
         // for (let i = 0; i < 10; i++) {
@@ -339,31 +339,31 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
         // }
         console.log('initialBith.allOrderbookSell[TRACK_ELEMENT_ORDERBOOK]=', initialBith.allOrderbookSell[TRACK_ELEMENT_ORDERBOOK]);
 
-        initialBith.buy = Number(initialBith.allOrderbookBay[TRACK_ELEMENT_ORDERBOOK][0]);
+        initialBith.buy = Number(initialBith.allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK][0]);
         initialBith.sell = Number(initialBith.allOrderbookSell[TRACK_ELEMENT_ORDERBOOK][0]);
-        if (!Boolean(initialBith.orderbookFirstPreviousBay)) {
-          initialBith.orderbookFirstPreviousBay = initialBith.buy;
+        if (!Boolean(initialBith.orderbookFirstPreviousBuy)) {
+          initialBith.orderbookFirstPreviousBuy = initialBith.buy;
         }
         if (!Boolean(initialBith.orderbookFirstPreviousSell)) {
           initialBith.orderbookFirstPreviousSell = initialBith.sell;
         }
-        if (initialBith.orderbookFirstPreviousBay && initialBith.orderbookFirstPreviousSell) {
+        if (initialBith.orderbookFirstPreviousBuy && initialBith.orderbookFirstPreviousSell) {
           initialBith.globalFlag = true;
           console.log('initialBith.globalFlag = true');
           // process.exit();
         }
-        // if ((resultChangeOrderbookBay || resultChangeOrderbookSell) && initialBith.initialFetchURL) {
+        // if ((resultChangeOrderbookBuy || resultChangeOrderbookSell) && initialBith.initialFetchURL) {
         initialBith.initialWs = true;
         // initialGate.globalFlag = true;
 
-        console.log('bithumbpro.js initialBith.orderbookFirstPreviousBay=', initialBith.orderbookFirstPreviousBay);
+        console.log('bithumbpro.js initialBith.orderbookFirstPreviousBuy=', initialBith.orderbookFirstPreviousBuy);
         console.log('bithumbpro.js initialBith.buy=', initialBith.buy);
         console.log('It`s Bith');
 
         if (initialBith.globalFlag && initialBith.initialWs) {
           initialBith.time = initialBith.messageObj.timestamp;
           console.log('  initialBith.time=', initialBith.time);
-          // objArrs: { arrBay: [], arrSell: [], arrTimeBay: [], arrTimeSell: [] }
+          // objArrs: { arrBuy: [], arrSell: [], arrTimeBuy: [], arrTimeSell: [] }
           console.log('initialBith.arrChart=', initialBith.arrChart);
 
 
@@ -372,17 +372,17 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
             // process.exit();
 
             //   const paramsGoTrade = {
-            //     buyGate: initialGate.priceAndComissionsBay,
-            //     buyBith: initialBith.priceAndComissionsBay,
+            //     buyGate: initialGate.priceAndComissionsBuy,
+            //     buyBith: initialBith.priceAndComissionsBuy,
             //     sellGate: initialGate.priceAndComissionsSell,
             //     sellBith: initialBith.priceAndComissionsSell,
             //     timeServer: new Date().getTime(),
             //     timeBith: initialBith.time,
             //     timeGate: initialGate.time,
             //     timeGateSell: initialGate.timeSell,
-            //     timeGateBay: initialGate.timeBay,
+            //     timeGateBuy: initialGate.timeBuy,
             //     timeBithSell: initialBith.timeSell,
-            //     timeBithBay: initialBith.timeBay,
+            //     timeBithBuy: initialBith.timeBuy,
             //     buyOrSellGate: initialGate.buyOrSell,
             //     buyOrSellBith: initialBith.buyOrSell,
             //     init: 0

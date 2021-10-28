@@ -12,24 +12,24 @@ let funStartWritting = (arrChart) => {
   // result = true;
   if (result || result2) {
     let str = '';
-    const arrBay = arrChart.map((item) => item + '\n'); //"\r\n"
-    str += arrBay.join('');
+    const arrBuy = arrChart.map((item) => item + '\n'); //"\r\n"
+    str += arrBuy.join('');
     console.log('str=', str);
-    let computesBay = computes(arrChart);
-    let arrTempBay = arrChart.map((item) => item[1]);
+    let computesBuy = computes(arrChart);
+    let arrTempBuy = arrChart.map((item) => item[1]);
     let arrTempSell = arrChart.map((item) => item[2]);
     const resDiffMaxIndexSell = diffMaxIndexS({ arr: arrTempSell, sell: true });
-    const resDiffMaxIndexBay = diffMaxIndexS({ arr: arrTempBay, sell: false });
-    const strComputes = `\n averag diffTimeVer = ${computesBay.diffTimeVer} \n averag diffTimeServer = ${computesBay.diffTimeServer}`;
+    const resDiffMaxIndexBuy = diffMaxIndexS({ arr: arrTempBuy, sell: false });
+    const strComputes = `\n averag diffTimeVer = ${computesBuy.diffTimeVer} \n averag diffTimeServer = ${computesBuy.diffTimeServer}`;
 
     consoleLogGroup`arrTemp.arrTempSell.length = ${arrTempSell.length}
       arrTempSell = ${arrTempSell}
-      arrTempBay = ${arrTempBay}
+      arrTempBuy = ${arrTempBuy}
       diffMaxIndexS({ arr: arrTemp, sell: true }) = ${resDiffMaxIndexSell}
-      diffMaxIndexS({ arr: arrTemp, sell: false }) = ${resDiffMaxIndexBay}
+      diffMaxIndexS({ arr: arrTemp, sell: false }) = ${resDiffMaxIndexBuy}
       strComputes = ${strComputes}`;
 
-    const resDiffMaxIndex = `\n resDiffMaxIndexSell = ${resDiffMaxIndexSell}\n resDiffMaxIndexBay = ${resDiffMaxIndexBay}`;
+    const resDiffMaxIndex = `\n resDiffMaxIndexSell = ${resDiffMaxIndexSell}\n resDiffMaxIndexBuy = ${resDiffMaxIndexBuy}`;
     str += strComputes + resDiffMaxIndex;
     fs.writeFile(`logs/${timeNow}_testQueezeBith.csv`, str, function (error) {
       if (error) throw error;
