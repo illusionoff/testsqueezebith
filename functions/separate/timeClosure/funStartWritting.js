@@ -12,24 +12,24 @@ let funStartWritting = (arrChart) => {
   // result = true;
   if (result || result2) {
     let str = '';
-    const arrBay = arrChart.map((item) => item + '\n'); //"\r\n"
-    str += arrBay.join('');
+    const arrBuy = arrChart.map((item) => item + '\n'); //"\r\n"
+    str += arrBuy.join('');
     console.log('str=', str);
-    let computesBay = computes(arrChart);
-    let arrTempBay = arrChart.map((item) => item[1]);
+    let computesBuy = computes(arrChart);
+    let arrTempBuy = arrChart.map((item) => item[1]);
     let arrTempSell = arrChart.map((item) => item[2]);
     const resDiffMaxIndexSell = diffMaxIndexS({ arr: arrTempSell, sell: true });
-    const resDiffMaxIndexBay = diffMaxIndexS({ arr: arrTempBay, sell: false });
-    const strComputes = `\n averag diffTimeVer = ${computesBay.diffTimeVer} \n averag diffTimeServer = ${computesBay.diffTimeServer}`;
+    const resDiffMaxIndexBuy = diffMaxIndexS({ arr: arrTempBuy, sell: false });
+    const strComputes = `\n averag diffTimeVer = ${computesBuy.diffTimeVer} \n averag diffTimeServer = ${computesBuy.diffTimeServer}`;
 
     consoleLogGroup`arrTemp.arrTempSell.length = ${arrTempSell.length}
       arrTempSell = ${arrTempSell}
-      arrTempBay = ${arrTempBay}
+      arrTempBuy = ${arrTempBuy}
       diffMaxIndexS({ arr: arrTemp, sell: true }) = ${resDiffMaxIndexSell}
-      diffMaxIndexS({ arr: arrTemp, sell: false }) = ${resDiffMaxIndexBay}
+      diffMaxIndexS({ arr: arrTemp, sell: false }) = ${resDiffMaxIndexBuy}
       strComputes = ${strComputes}`;
 
-    const resDiffMaxIndex = `\n resDiffMaxIndexSell = ${resDiffMaxIndexSell}\n resDiffMaxIndexBay = ${resDiffMaxIndexBay}`;
+    const resDiffMaxIndex = `\n resDiffMaxIndexSell = ${resDiffMaxIndexSell}\n resDiffMaxIndexBuy = ${resDiffMaxIndexBuy}`;
     str += strComputes + resDiffMaxIndex;
     fs.writeFile(`logs/${timeNow}_testQueezeBith.csv`, str, function (error) {
       if (error) throw error;
@@ -43,7 +43,7 @@ let funStartWritting = (arrChart) => {
 function squeeze(arr, strItem) {
   //  если данных нет или мало
   if (arr.length < 2) return false
-  let arrTemp = arr.map((item) => item[strItem]);// цена это второй элемент сейчас в массиве для bay и третий для sell
+  let arrTemp = arr.map((item) => item[strItem]);// цена это второй элемент сейчас в массиве для buy и третий для sell
   let sum = arrTemp.reduce((accum, item) => {
     accum += item;
     return accum;
@@ -65,7 +65,7 @@ function squeeze(arr, strItem) {
   return flag
 }
 //  находим наибольшоую разницу
-function diffMaxIndex(obj, arrDiffMaxIndex) { // obj = { arr: arr, sell: true } true = sell, false = bay
+function diffMaxIndex(obj, arrDiffMaxIndex) { // obj = { arr: arr, sell: true } true = sell, false = buy
   let diffMax = obj.arr.reduce((accum, item, index, arr) => {
     let preIndex = 0;
     preIndex = index - 1;
